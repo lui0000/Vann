@@ -118,6 +118,84 @@ class AVLTree <T>{
             // Return new root
             return x;
         }
+        private Node<T> rightLeftRotate(Node<T> z) {
+            // Perform the right rotation
+            Node<T> x = z.getLeft();
+            Node<T> temp = x.getRight();
+
+            // Perform rotation
+            x.setRight(z);
+            z.setLeft(temp);
+
+            // Update heights
+            z.setHeight(maxHeight(height(z.getLeft()), height(z.getRight())) + 1);
+            x.setHeight(maxHeight(height(x.getLeft()), height(x.getRight())) + 1);
+
+            // Perform the left rotation
+            Node<T> y = z.getRight();
+            Node<T> temp1 = y.getLeft();
+
+            // Perform rotation
+            y.setLeft(temp1);
+            z.setRight(y);
+
+            // Update heights
+            z.setHeight(maxHeight(height(z.getLeft()), height(z.getRight())) + 1);
+            y.setHeight(maxHeight(height(y.getLeft()), height(y.getRight())) + 1);
+
+            // Return new root
+            return z;
+        }
+        //пиздец нахуй блять, почему на плюсах эта функция занимала всего 2 строчки, а тут....
+        private Node<T> balanceFactor(Node<T> x, Node<T> y) {
+            Node<T> rightChildX = x.getRight();
+            Node<T> leftChildY = y.getLeft();
+
+            int rightHeightX = (rightChildX == null) ? 0 : rightChildX.getHeight();
+            int leftHeightY = (leftChildY == null) ? 0 : leftChildY.getHeight();
+
+            int balanceFactorX = leftHeightY - rightHeightX;
+
+            if (balanceFactorX > 1) {
+                // Left subtree is taller than the right, check for left-left or left-right case
+                Node<T> leftChildYLeft = (leftChildY != null) ? leftChildY.getLeft() : null;
+                Node<T> leftChildYRight = (leftChildY != null) ? leftChildY.getRight() : null;
+
+                int leftChildYLeftHeight = (leftChildYLeft != null) ? leftChildYLeft.getHeight() : 0;
+                int leftChildYRightHeight = (leftChildYRight != null) ? leftChildYRight.getHeight() : 0;
+
+                if (leftChildYLeftHeight >= leftChildYRightHeight) {
+                    // Left-left case, perform right rotation
+                    return rightRotate(y);
+                } else {
+                    // Left-right case, perform left rotation on x and then right rotation on y
+                    x.setLeft(leftRotate(leftChildY));
+                    return rightRotate(y);
+                }
+            } else if (balanceFactorX < -1) {
+                // Right subtree is taller than the left, check for right-right or right-left case
+                Node<T> rightChildXLeft = (rightChildX != null) ? rightChildX.getLeft() : null;
+                Node<T> rightChildXRight = (rightChildX != null) ? rightChildX.getRight() : null;
+
+                int rightChildXLeftHeight = (rightChildXLeft != null) ? rightChildXLeft.getHeight() : 0;
+                int rightChildXRightHeight = (rightChildXRight != null) ? rightChildXRight.getHeight() : 0;
+
+                if (rightChildXRightHeight >= rightChildXLeftHeight) {
+                    // Right-right case, perform left rotation
+                    return leftRotate(x);
+                } else {
+                    // Right-left case, perform right rotation on y and then left rotation on x
+                    y.setRight(rightRotate(rightChildX));
+                    return leftRotate(x);
+                }
+            }
+
+            // Tree is balanced, no rotation needed
+            return y;
+        }
+
+
+
     }
 
 }
