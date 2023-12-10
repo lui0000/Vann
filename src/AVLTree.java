@@ -1,114 +1,123 @@
-public class AVLTree <T>{
-    private T data;
-    private AVLTree<T> left;
-    private AVLTree<T> right;
-    private int height;
-    public AVLTree(T data, AVLTree<T> left, AVLTree<T> right, int height) {
-        this.data = data;
-        this.left = null;
-        this.right = null;
-        this.height = 1;
-    }
-    public T getData() {
-        return data;
-    }
+class AVLTree <T>{
+    static class Node <T> {
 
-    public AVLTree<T> getLeft() {
-        return left;
-    }
+        private T data;
+        private Node<T> left;
+        private Node<T> right;
+        private int height;
 
-    public AVLTree<T> getRight() {
-        return right;
-    }
+        public Node(T data, Node<T> left, Node<T> right, int height) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+            this.height = 1;
+        }
 
-    public int getHeight() {
-        return height;
-    }
-    public void setData(T data) {
-        this.data = data;
-    }
+        public T getData() {
+            return data;
+        }
 
-    public void setLeft(AVLTree<T> left) {
-        this.left = left;
-    }
+        public Node<T> getLeft() {
+            return left;
+        }
 
-    public void setRight(AVLTree<T> right) {
-        this.right = right;
-    }
+        public Node<T> getRight() {
+            return right;
+        }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-    // Utility method to get the height of a node
-    private int height(AVLTree<T> node) {
-        return (node == null) ? 0 : node.getHeight();
-    }
+        public int getHeight() {
+            return height;
+        }
 
-    // Utility method to find the maximum of two integers
-    private int maxHeight(int a, int b) {
-        return Math.max(a, b);
-    }
+        public void setData(T data) {
+            this.data = data;
+        }
 
-    private  AVLTree<T> rightRotate(AVLTree<T> y) {
-        // Perform the right rotation
-        AVLTree<T> x = y.getLeft();
-        AVLTree<T> temp = x.getRight();
+        public void setLeft(Node<T> left) {
+            this.left = left;
+        }
 
-        // Perform rotation
-        x.setRight(y);
-        y.setLeft(temp);
+        public void setRight(Node<T> right) {
+            this.right = right;
+        }
 
-        // Update heights
-        y.setHeight(maxHeight(height(y.getLeft()), height(y.getRight())) + 1);
-        x.setHeight(maxHeight(height(x.getLeft()), height(x.getRight())) + 1);
+        public void setHeight(int height) {
+            this.height = height;
+        }
 
-        // Return new root
-        return x;
+        // Utility method to get the height of a node
+        private int height(Node<T> node) {
+            return (node == null) ? 0 : node.getHeight();
+        }
 
-    }
-    private AVLTree<T> leftRotate(AVLTree<T> x) {
-        // Perform the left rotation
-        AVLTree<T> y = x.getRight();
-        AVLTree<T> temp = y.getLeft();
+        // Utility method to find the maximum of two integers
+        private int maxHeight(int a, int b) {
+            return Math.max(a, b);
+        }
 
-        // Perform rotation
-        y.setLeft(x);
-        x.setRight(temp);
+        private Node<T> rightRotate(Node<T> y) {
+            // Perform the right rotation
+            Node<T> x = y.getLeft();
+            Node<T> temp = x.getRight();
 
-        // Update heights
-        x.setHeight(maxHeight(height(x.getLeft()), height(x.getRight())) + 1);
-        y.setHeight(maxHeight(height(y.getLeft()), height(y.getRight())) + 1);
+            // Perform rotation
+            x.setRight(y);
+            y.setLeft(temp);
 
-        // Return new root
-        return y;
-    }
-    private AVLTree<T> leftRightRotate(AVLTree<T> z) {
-// Perform the left rotation
-        AVLTree<T> y = z.getRight();
-        AVLTree<T> temp1 = y.getLeft();
+            // Update heights
+            y.setHeight(maxHeight(height(y.getLeft()), height(y.getRight())) + 1);
+            x.setHeight(maxHeight(height(x.getLeft()), height(x.getRight())) + 1);
 
-        // Perform rotation
-        y.setLeft(temp1);
-        z.setRight(y);
+            // Return new root
+            return x;
 
-        // Update heights
-        z.setHeight(maxHeight(height(z.getLeft()), height(z.getRight())) + 1);
-        y.setHeight(maxHeight(height(y.getLeft()), height(y.getRight())) + 1);
+        }
 
-        // Perform the right rotation
-        AVLTree<T> x = z.getRight();
-        AVLTree<T> temp2 = x.getLeft();
+        private Node<T> leftRotate(Node<T> x) {
+            // Perform the left rotation
+            Node<T> y = x.getRight();
+            Node<T> temp = y.getLeft();
 
-        // Perform rotation
-        x.setLeft(y);
-        z.setRight(temp2);
+            // Perform rotation
+            y.setLeft(x);
+            x.setRight(temp);
 
-        // Update heights
-        y.setHeight(maxHeight(height(y.getLeft()), height(y.getRight())) + 1);
-        x.setHeight(maxHeight(height(x.getLeft()), height(x.getRight())) + 1);
+            // Update heights
+            x.setHeight(maxHeight(height(x.getLeft()), height(x.getRight())) + 1);
+            y.setHeight(maxHeight(height(y.getLeft()), height(y.getRight())) + 1);
 
-        // Return new root
-        return x;
+            // Return new root
+            return y;
+        }
+
+        private Node<T> leftRightRotate(Node<T> z) {
+            // Perform the left rotation
+            Node<T> y = z.getRight();
+            Node<T> temp1 = y.getLeft();
+
+            // Perform rotation
+            y.setLeft(temp1);
+            z.setRight(y);
+
+            // Update heights
+            z.setHeight(maxHeight(height(z.getLeft()), height(z.getRight())) + 1);
+            y.setHeight(maxHeight(height(y.getLeft()), height(y.getRight())) + 1);
+
+            // Perform the right rotation
+            Node<T> x = z.getRight();
+            Node<T> temp2 = x.getLeft();
+
+            // Perform rotation
+            x.setLeft(y);
+            z.setRight(temp2);
+
+            // Update heights
+            y.setHeight(maxHeight(height(y.getLeft()), height(y.getRight())) + 1);
+            x.setHeight(maxHeight(height(x.getLeft()), height(x.getRight())) + 1);
+
+            // Return new root
+            return x;
+        }
     }
 
 }
