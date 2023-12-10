@@ -1,6 +1,5 @@
-class AVLTree <T>{
-    static class Node <T> {
-
+class AVLTree <T extends Comparable<T>>{
+    static class Node<T extends Comparable<T>>{
         private T data;
         private Node<T> left;
         private Node<T> right;
@@ -10,7 +9,7 @@ class AVLTree <T>{
             this.data = data;
             this.left = null;
             this.right = null;
-            this.height = 1;
+            this.height = 1 + Math.max(height(left), height(right));;
         }
 
         public T getData() {
@@ -193,8 +192,25 @@ class AVLTree <T>{
             // Tree is balanced, no rotation needed
             return y;
         }
+        public Node<T> search(T key) {
+            return search(this, key);
+        }
+
+        private Node<T> search(Node<T> node, T key) {
+            if (node == null || key.compareTo(node.data) == 0) {
+                return node;
+            }
+
+            if (key.compareTo(node.data) < 0) {
+                return search(node.left, key);
+            } else {
+                return search(node.right, key);
+            }
+        }
 
 
+    }
+    public static void main(String[] args) {
 
     }
 
